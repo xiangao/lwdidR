@@ -1,0 +1,9 @@
+^\.git$
+^\.github$
+^\.gitignore$
+^README\.Rmd$
+^NEWS\.md$
+^LICENSE\.md$
+^\.Rbuildignore$
+^output$
+^man-roxygen$

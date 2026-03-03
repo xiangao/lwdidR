@@ -1,0 +1,230 @@
+---
+title: "Castle Law Replication: Lee & Wooldridge (2025) Section 7.2"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Castle Law Replication}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Overview
+
+This vignette replicates the staggered DiD estimates from Lee & Wooldridge (2025),
+Section 7.2, using the `lwdidR` package. The analysis studies the effect of
+Castle Doctrine laws on log homicide rates for US states, 2000–2010.
+
+**Expected results (from paper and Python replication):**
+
+| Estimator | ATT | SE | t-stat |
+|-----------|-----|-----|--------|
+| Demeaning (OLS SE) | ≈ 0.092 | ≈ 0.057 | ≈ 1.61 |
+| Demeaning (HC3 SE) | ≈ 0.092 | ≈ 0.061 | ≈ 1.50 |
+| Detrending (HC3 SE) | ≈ 0.067 | ≈ 0.055 | ≈ 1.21 |
+
+---
+
+## Setup
+
+```{r load-package}
+library(lwdidR)
+library(knitr)
+```
+
+```{r load-data}
+data_path <- system.file("extdata", "castle.csv", package = "lwdidR")
+stopifnot(nchar(data_path) > 0)
+castle <- read.csv(data_path)
+
+# Construct gvar: first treatment year (NA for never treated)
+castle$gvar <- castle$effyear
+castle$gvar[is.na(castle$gvar) | castle$gvar == 0] <- NA
+
+# Verify data structure
+cat("Dimensions:", nrow(castle), "x", ncol(castle), "\n")
+cat("Years:", min(castle$year), "to", max(castle$year), "\n")
+cat("States:", length(unique(castle$sid)), "\n")
+cat("Treatment cohorts:\n")
+cohort_counts <- table(castle$gvar[!duplicated(castle$sid)], useNA = "ifany")
+print(cohort_counts)
+```
+
+---
+
+## Demeaning Estimator
+
+### With OLS Standard Errors
+
+```{r demean-ols}
+res_demean_ols <- lwdid(
+  data          = castle,
+  y             = "lhomicide",
+  ivar          = "sid",
+  tvar          = "year",
+  gvar          = "gvar",
+  rolling       = "demean",
+  control_group = "never_treated",
+  aggregate     = "overall",
+  vce           = NULL  # homoskedastic OLS
+)
+print(res_demean_ols)
+```
+
+### With HC3 Standard Errors
+
+```{r demean-hc3}
+res_demean_hc3 <- lwdid(
+  data          = castle,
+  y             = "lhomicide",
+  ivar          = "sid",
+  tvar          = "year",
+  gvar          = "gvar",
+  rolling       = "demean",
+  control_group = "never_treated",
+  aggregate     = "overall",
+  vce           = "hc3"
+)
+print(res_demean_hc3)
+```
+
+---
+
+## Detrending Estimator
+
+```{r detrend-hc3}
+res_detrend_hc3 <- lwdid(
+  data          = castle,
+  y             = "lhomicide",
+  ivar          = "sid",
+  tvar          = "year",
+  gvar          = "gvar",
+  rolling       = "detrend",
+  control_group = "never_treated",
+  aggregate     = "overall",
+  vce           = "hc3"
+)
+print(res_detrend_hc3)
+```
+
+---
+
+## Summary Comparison Table
+
+```{r comparison-table}
+paper_vals <- data.frame(
+  Method       = c("Demeaning (OLS)", "Demeaning (HC3)", "Detrending (HC3)"),
+  Paper_ATT    = c(0.092, 0.092, 0.067),
+  Paper_SE     = c(0.057, NA, 0.055),
+  Paper_tstat  = c(1.61, 1.50, 1.21)
+)
+
+r_vals <- data.frame(
+  Method     = c("Demeaning (OLS)", "Demeaning (HC3)", "Detrending (HC3)"),
+  R_ATT      = round(c(res_demean_ols$att_overall,
+                        res_demean_hc3$att_overall,
+                        res_detrend_hc3$att_overall), 4),
+  R_SE       = round(c(res_demean_ols$se_overall,
+                        res_demean_hc3$se_overall,
+                        res_detrend_hc3$se_overall), 4),
+  R_tstat    = round(c(res_demean_ols$tstat,
+                        res_demean_hc3$tstat,
+                        res_detrend_hc3$tstat), 3)
+)
+
+results_table <- merge(paper_vals, r_vals, by = "Method")
+kable(results_table, caption = "Table 7.2 Replication: Lee & Wooldridge (2025)")
+```
+
+---
+
+## Cohort-Specific Effects
+
+```{r cohort-effects}
+res_cohort <- lwdid(
+  data          = castle,
+  y             = "lhomicide",
+  ivar          = "sid",
+  tvar          = "year",
+  gvar          = "gvar",
+  rolling       = "demean",
+  control_group = "never_treated",
+  aggregate     = "cohort",
+  vce           = "hc3"
+)
+
+cat("\nCohort-specific ATT estimates:\n")
+kable(
+  res_cohort$att_by_cohort[, c("cohort", "att", "se", "ci_lower", "ci_upper",
+                                 "tstat", "pvalue", "n_periods", "n_units")],
+  digits = 4,
+  caption = "Cohort Effects (Equation 7.9, Lee & Wooldridge 2025)"
+)
+```
+
+---
+
+## All (g, r) Effects
+
+```{r gr-effects}
+res_none <- lwdid(
+  data          = castle,
+  y             = "lhomicide",
+  ivar          = "sid",
+  tvar          = "year",
+  gvar          = "gvar",
+  rolling       = "demean",
+  control_group = "never_treated",
+  aggregate     = "none",
+  vce           = "hc3"
+)
+
+cat(sprintf("\nTotal (g,r) pairs estimated: %d\n", nrow(res_none$att_by_cohort_time)))
+kable(
+  head(res_none$att_by_cohort_time[, c("cohort", "period", "event_time",
+                                         "att", "se", "pvalue")], 15),
+  digits = 4,
+  caption = "(g, r)-Specific Effects (Equation 7.8, Lee & Wooldridge 2025)"
+)
+```
+
+---
+
+## Numerical Checks
+
+```{r checks}
+cat("=== Numerical Verification ===\n\n")
+
+tol <- 0.001
+checks <- list(
+  list(label = "Demeaning ATT",   got = res_demean_ols$att_overall, ref = 0.092),
+  list(label = "OLS SE",          got = res_demean_ols$se_overall,  ref = 0.057),
+  list(label = "OLS t-stat",      got = res_demean_ols$tstat,       ref = 1.607),
+  list(label = "HC3 t-stat",      got = res_demean_hc3$tstat,       ref = 1.50),
+  list(label = "Detrending ATT",  got = res_detrend_hc3$att_overall,ref = 0.067),
+  list(label = "Detrend HC3 t",   got = res_detrend_hc3$tstat,      ref = 1.21)
+)
+
+all_pass <- TRUE
+for (chk in checks) {
+  diff  <- abs(chk$got - chk$ref)
+  pass  <- diff < tol
+  all_pass <- all_pass && pass
+  cat(sprintf("%-20s  got: %7.4f  ref: %5.3f  diff: %.5f  %s\n",
+              chk$label, chk$got, chk$ref, diff,
+              if (pass) "PASS" else "FAIL"))
+}
+cat(sprintf("\nAll checks pass: %s\n", all_pass))
+```
+
+---
+
+## Session Info
+
+```{r session}
+sessionInfo()
+```

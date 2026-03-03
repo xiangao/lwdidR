@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Castle Law Replication: Lee &amp; Wooldridge (2025) Section 7.2</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Castle Law Replication: Lee &amp;
+Wooldridge (2025) Section 7.2</h1>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#setup" id="toc-setup">Setup</a></li>
+<li><a href="#demeaning-estimator" id="toc-demeaning-estimator">Demeaning Estimator</a>
+<ul>
+<li><a href="#with-ols-standard-errors" id="toc-with-ols-standard-errors">With OLS Standard Errors</a></li>
+<li><a href="#with-hc3-standard-errors" id="toc-with-hc3-standard-errors">With HC3 Standard Errors</a></li>
+</ul></li>
+<li><a href="#detrending-estimator" id="toc-detrending-estimator">Detrending Estimator</a></li>
+<li><a href="#summary-comparison-table" id="toc-summary-comparison-table">Summary Comparison Table</a></li>
+<li><a href="#cohort-specific-effects" id="toc-cohort-specific-effects">Cohort-Specific Effects</a></li>
+<li><a href="#all-g-r-effects" id="toc-all-g-r-effects">All (g, r)
+Effects</a></li>
+<li><a href="#numerical-checks" id="toc-numerical-checks">Numerical
+Checks</a></li>
+<li><a href="#session-info" id="toc-session-info">Session Info</a></li>
+</ul>
+</div>
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>This vignette replicates the staggered DiD estimates from Lee &amp;
+Wooldridge (2025), Section 7.2, using the <code>lwdidR</code> package.
+The analysis studies the effect of Castle Doctrine laws on log homicide
+rates for US states, 2000–2010.</p>
+<p><strong>Expected results (from paper and Python
+replication):</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Estimator</th>
+<th>ATT</th>
+<th>SE</th>
+<th>t-stat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Demeaning (OLS SE)</td>
+<td>≈ 0.092</td>
+<td>≈ 0.057</td>
+<td>≈ 1.61</td>
+</tr>
+<tr class="even">
+<td>Demeaning (HC3 SE)</td>
+<td>≈ 0.092</td>
+<td>≈ 0.061</td>
+<td>≈ 1.50</td>
+</tr>
+<tr class="odd">
+<td>Detrending (HC3 SE)</td>
+<td>≈ 0.067</td>
+<td>≈ 0.055</td>
+<td>≈ 1.21</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(lwdidR)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(knitr)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>data_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;castle.csv&quot;</span>, <span class="at">package =</span> <span class="st">&quot;lwdidR&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">nchar</span>(data_path) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>castle <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(data_path)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co"># Construct gvar: first treatment year (NA for never treated)</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>castle<span class="sc">$</span>gvar <span class="ot">&lt;-</span> castle<span class="sc">$</span>effyear</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>castle<span class="sc">$</span>gvar[<span class="fu">is.na</span>(castle<span class="sc">$</span>gvar) <span class="sc">|</span> castle<span class="sc">$</span>gvar <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co"># Verify data structure</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Dimensions:&quot;</span>, <span class="fu">nrow</span>(castle), <span class="st">&quot;x&quot;</span>, <span class="fu">ncol</span>(castle), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>## Dimensions: 550 x 61</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Years:&quot;</span>, <span class="fu">min</span>(castle<span class="sc">$</span>year), <span class="st">&quot;to&quot;</span>, <span class="fu">max</span>(castle<span class="sc">$</span>year), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>## Years: 2000 to 2010</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;States:&quot;</span>, <span class="fu">length</span>(<span class="fu">unique</span>(castle<span class="sc">$</span>sid)), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>## States: 50</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Treatment cohorts:</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>## Treatment cohorts:</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>cohort_counts <span class="ot">&lt;-</span> <span class="fu">table</span>(castle<span class="sc">$</span>gvar[<span class="sc">!</span><span class="fu">duplicated</span>(castle<span class="sc">$</span>sid)], <span class="at">useNA =</span> <span class="st">&quot;ifany&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="fu">print</span>(cohort_counts)</span></code></pre></div>
+<pre><code>## 
+## 2005 2006 2007 2008 2009 &lt;NA&gt; 
+##    1   13    4    2    1   29</code></pre>
+<hr />
+</div>
+<div id="demeaning-estimator" class="section level2">
+<h2>Demeaning Estimator</h2>
+<div id="with-ols-standard-errors" class="section level3">
+<h3>With OLS Standard Errors</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>res_demean_ols <span class="ot">&lt;-</span> <span class="fu">lwdid</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="at">data          =</span> castle,</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="at">y             =</span> <span class="st">&quot;lhomicide&quot;</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="at">ivar          =</span> <span class="st">&quot;sid&quot;</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>  <span class="at">tvar          =</span> <span class="st">&quot;year&quot;</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>  <span class="at">gvar          =</span> <span class="st">&quot;gvar&quot;</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>  <span class="at">rolling       =</span> <span class="st">&quot;demean&quot;</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>  <span class="at">control_group =</span> <span class="st">&quot;never_treated&quot;</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>  <span class="at">aggregate     =</span> <span class="st">&quot;overall&quot;</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>  <span class="at">vce           =</span> <span class="cn">NULL</span>  <span class="co"># homoskedastic OLS</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a>)</span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="fu">print</span>(res_demean_ols)</span></code></pre></div>
+<pre><code>## 
+## Lee-Wooldridge DiD (lwdidR)
+## Design:      staggered
+## Transf.:     demean
+## VCE:         OLS
+## --------------------------------------------------
+## Overall ATT:   0.0917
+## SE:            0.0571
+## t-stat:        1.6067
+## p-value:       0.1147
+## --------------------------------------------------
+## 
+## Cohort-specific effects:
+##  cohort     att      se  tstat pvalue
+##    2005 0.08017 0.17305 0.4632 0.6468
+##    2006 0.06824 0.07220 0.9450 0.3503
+##    2007 0.11406 0.08998 1.2676 0.2144
+##    2008 0.14605 0.13963 1.0459 0.3042
+##    2009 0.21108 0.19105 1.1049 0.2786</code></pre>
+</div>
+<div id="with-hc3-standard-errors" class="section level3">
+<h3>With HC3 Standard Errors</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>res_demean_hc3 <span class="ot">&lt;-</span> <span class="fu">lwdid</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="at">data          =</span> castle,</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="at">y             =</span> <span class="st">&quot;lhomicide&quot;</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="at">ivar          =</span> <span class="st">&quot;sid&quot;</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  <span class="at">tvar          =</span> <span class="st">&quot;year&quot;</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>  <span class="at">gvar          =</span> <span class="st">&quot;gvar&quot;</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  <span class="at">rolling       =</span> <span class="st">&quot;demean&quot;</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>  <span class="at">control_group =</span> <span class="st">&quot;never_treated&quot;</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>  <span class="at">aggregate     =</span> <span class="st">&quot;overall&quot;</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>  <span class="at">vce           =</span> <span class="st">&quot;hc3&quot;</span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>)</span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="fu">print</span>(res_demean_hc3)</span></code></pre></div>
+<pre><code>## 
+## Lee-Wooldridge DiD (lwdidR)
+## Design:      staggered
+## Transf.:     demean
+## VCE:         HC3
+## --------------------------------------------------
+## Overall ATT:   0.0917
+## SE:            0.0612
+## t-stat:        1.4997
+## p-value:       0.1402
+## --------------------------------------------------
+## 
+## Cohort-specific effects:
+##  cohort     att      se tstat    pvalue
+##    2005 0.08017 0.03215 2.493 1.884e-02
+##    2006 0.06824 0.08920 0.765 4.488e-01
+##    2007 0.11406 0.09838 1.159 2.552e-01
+##    2008 0.14605 0.08203 1.780 8.548e-02
+##    2009 0.21108 0.03550 5.946 2.115e-06</code></pre>
+<hr />
+</div>
+</div>
+<div id="detrending-estimator" class="section level2">
+<h2>Detrending Estimator</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>res_detrend_hc3 <span class="ot">&lt;-</span> <span class="fu">lwdid</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>  <span class="at">data          =</span> castle,</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>  <span class="at">y             =</span> <span class="st">&quot;lhomicide&quot;</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>  <span class="at">ivar          =</span> <span class="st">&quot;sid&quot;</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>  <span class="at">tvar          =</span> <span class="st">&quot;year&quot;</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>  <span class="at">gvar          =</span> <span class="st">&quot;gvar&quot;</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>  <span class="at">rolling       =</span> <span class="st">&quot;detrend&quot;</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>  <span class="at">control_group =</span> <span class="st">&quot;never_treated&quot;</span>,</span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>  <span class="at">aggregate     =</span> <span class="st">&quot;overall&quot;</span>,</span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a>  <span class="at">vce           =</span> <span class="st">&quot;hc3&quot;</span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a>)</span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="fu">print</span>(res_detrend_hc3)</span></code></pre></div>
+<pre><code>## 
+## Lee-Wooldridge DiD (lwdidR)
+## Design:      staggered
+## Transf.:     detrend
+## VCE:         HC3
+## --------------------------------------------------
+## Overall ATT:   0.0666
+## SE:            0.0550
+## t-stat:        1.2102
+## p-value:       0.2321
+## --------------------------------------------------
+## 
+## Cohort-specific effects:
+##  cohort       att      se    tstat   pvalue
+##    2005  0.139526 0.06496  2.14797 0.040513
+##    2006  0.107340 0.05758  1.86411 0.069657
+##    2007 -0.002499 0.14025 -0.01782 0.985897
+##    2008 -0.126735 0.13892 -0.91231 0.369129
+##    2009  0.126083 0.04250  2.96646 0.006102</code></pre>
+<hr />
+</div>
+<div id="summary-comparison-table" class="section level2">
+<h2>Summary Comparison Table</h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>paper_vals <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  <span class="at">Method       =</span> <span class="fu">c</span>(<span class="st">&quot;Demeaning (OLS)&quot;</span>, <span class="st">&quot;Demeaning (HC3)&quot;</span>, <span class="st">&quot;Detrending (HC3)&quot;</span>),</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>  <span class="at">Paper_ATT    =</span> <span class="fu">c</span>(<span class="fl">0.092</span>, <span class="fl">0.092</span>, <span class="fl">0.067</span>),</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>  <span class="at">Paper_SE     =</span> <span class="fu">c</span>(<span class="fl">0.057</span>, <span class="cn">NA</span>, <span class="fl">0.055</span>),</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>  <span class="at">Paper_tstat  =</span> <span class="fu">c</span>(<span class="fl">1.61</span>, <span class="fl">1.50</span>, <span class="fl">1.21</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>)</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>r_vals <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>  <span class="at">Method     =</span> <span class="fu">c</span>(<span class="st">&quot;Demeaning (OLS)&quot;</span>, <span class="st">&quot;Demeaning (HC3)&quot;</span>, <span class="st">&quot;Detrending (HC3)&quot;</span>),</span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>  <span class="at">R_ATT      =</span> <span class="fu">round</span>(<span class="fu">c</span>(res_demean_ols<span class="sc">$</span>att_overall,</span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a>                        res_demean_hc3<span class="sc">$</span>att_overall,</span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>                        res_detrend_hc3<span class="sc">$</span>att_overall), <span class="dv">4</span>),</span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>  <span class="at">R_SE       =</span> <span class="fu">round</span>(<span class="fu">c</span>(res_demean_ols<span class="sc">$</span>se_overall,</span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a>                        res_demean_hc3<span class="sc">$</span>se_overall,</span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a>                        res_detrend_hc3<span class="sc">$</span>se_overall), <span class="dv">4</span>),</span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a>  <span class="at">R_tstat    =</span> <span class="fu">round</span>(<span class="fu">c</span>(res_demean_ols<span class="sc">$</span>tstat,</span>
+<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a>                        res_demean_hc3<span class="sc">$</span>tstat,</span>
+<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a>                        res_detrend_hc3<span class="sc">$</span>tstat), <span class="dv">3</span>)</span>
+<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a>)</span>
+<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a></span>
+<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a>results_table <span class="ot">&lt;-</span> <span class="fu">merge</span>(paper_vals, r_vals, <span class="at">by =</span> <span class="st">&quot;Method&quot;</span>)</span>
+<span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a><span class="fu">kable</span>(results_table, <span class="at">caption =</span> <span class="st">&quot;Table 7.2 Replication: Lee &amp; Wooldridge (2025)&quot;</span>)</span></code></pre></div>
+<table>
+<caption>Table 7.2 Replication: Lee &amp; Wooldridge (2025)</caption>
+<colgroup>
+<col width="24%" />
+<col width="14%" />
+<col width="12%" />
+<col width="17%" />
+<col width="10%" />
+<col width="10%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Method</th>
+<th align="right">Paper_ATT</th>
+<th align="right">Paper_SE</th>
+<th align="right">Paper_tstat</th>
+<th align="right">R_ATT</th>
+<th align="right">R_SE</th>
+<th align="right">R_tstat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Demeaning (HC3)</td>
+<td align="right">0.092</td>
+<td align="right">NA</td>
+<td align="right">1.50</td>
+<td align="right">0.0917</td>
+<td align="right">0.0612</td>
+<td align="right">1.500</td>
+</tr>
+<tr class="even">
+<td align="left">Demeaning (OLS)</td>
+<td align="right">0.092</td>
+<td align="right">0.057</td>
+<td align="right">1.61</td>
+<td align="right">0.0917</td>
+<td align="right">0.0571</td>
+<td align="right">1.607</td>
+</tr>
+<tr class="odd">
+<td align="left">Detrending (HC3)</td>
+<td align="right">0.067</td>
+<td align="right">0.055</td>
+<td align="right">1.21</td>
+<td align="right">0.0666</td>
+<td align="right">0.0550</td>
+<td align="right">1.210</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="cohort-specific-effects" class="section level2">
+<h2>Cohort-Specific Effects</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>res_cohort <span class="ot">&lt;-</span> <span class="fu">lwdid</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  <span class="at">data          =</span> castle,</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  <span class="at">y             =</span> <span class="st">&quot;lhomicide&quot;</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>  <span class="at">ivar          =</span> <span class="st">&quot;sid&quot;</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  <span class="at">tvar          =</span> <span class="st">&quot;year&quot;</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>  <span class="at">gvar          =</span> <span class="st">&quot;gvar&quot;</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>  <span class="at">rolling       =</span> <span class="st">&quot;demean&quot;</span>,</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>  <span class="at">control_group =</span> <span class="st">&quot;never_treated&quot;</span>,</span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>  <span class="at">aggregate     =</span> <span class="st">&quot;cohort&quot;</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a>  <span class="at">vce           =</span> <span class="st">&quot;hc3&quot;</span></span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a>)</span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">Cohort-specific ATT estimates:</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+## Cohort-specific ATT estimates:</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>  res_cohort<span class="sc">$</span>att_by_cohort[, <span class="fu">c</span>(<span class="st">&quot;cohort&quot;</span>, <span class="st">&quot;att&quot;</span>, <span class="st">&quot;se&quot;</span>, <span class="st">&quot;ci_lower&quot;</span>, <span class="st">&quot;ci_upper&quot;</span>,</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>                                 <span class="st">&quot;tstat&quot;</span>, <span class="st">&quot;pvalue&quot;</span>, <span class="st">&quot;n_periods&quot;</span>, <span class="st">&quot;n_units&quot;</span>)],</span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">&quot;Cohort Effects (Equation 7.9, Lee &amp; Wooldridge 2025)&quot;</span></span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a>)</span></code></pre></div>
+<table style="width:100%;">
+<caption>Cohort Effects (Equation 7.9, Lee &amp; Wooldridge
+2025)</caption>
+<colgroup>
+<col width="6%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+<col width="9%" />
+<col width="9%" />
+<col width="13%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">cohort</th>
+<th align="right">att</th>
+<th align="right">se</th>
+<th align="right">ci_lower</th>
+<th align="right">ci_upper</th>
+<th align="right">tstat</th>
+<th align="right">pvalue</th>
+<th align="right">n_periods</th>
+<th align="right">n_units</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2005</td>
+<td align="right">2005</td>
+<td align="right">0.0802</td>
+<td align="right">0.0322</td>
+<td align="right">0.0143</td>
+<td align="right">0.1460</td>
+<td align="right">2.4932</td>
+<td align="right">0.0188</td>
+<td align="right">6</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">2006</td>
+<td align="right">2006</td>
+<td align="right">0.0682</td>
+<td align="right">0.0892</td>
+<td align="right">-0.1120</td>
+<td align="right">0.2485</td>
+<td align="right">0.7650</td>
+<td align="right">0.4488</td>
+<td align="right">5</td>
+<td align="right">13</td>
+</tr>
+<tr class="odd">
+<td align="left">2007</td>
+<td align="right">2007</td>
+<td align="right">0.1141</td>
+<td align="right">0.0984</td>
+<td align="right">-0.0866</td>
+<td align="right">0.3147</td>
+<td align="right">1.1594</td>
+<td align="right">0.2552</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="left">2008</td>
+<td align="right">2008</td>
+<td align="right">0.1460</td>
+<td align="right">0.0820</td>
+<td align="right">-0.0217</td>
+<td align="right">0.3138</td>
+<td align="right">1.7805</td>
+<td align="right">0.0855</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">2009</td>
+<td align="right">2009</td>
+<td align="right">0.2111</td>
+<td align="right">0.0355</td>
+<td align="right">0.1384</td>
+<td align="right">0.2838</td>
+<td align="right">5.9463</td>
+<td align="right">0.0000</td>
+<td align="right">2</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="all-g-r-effects" class="section level2">
+<h2>All (g, r) Effects</h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>res_none <span class="ot">&lt;-</span> <span class="fu">lwdid</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  <span class="at">data          =</span> castle,</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>  <span class="at">y             =</span> <span class="st">&quot;lhomicide&quot;</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>  <span class="at">ivar          =</span> <span class="st">&quot;sid&quot;</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>  <span class="at">tvar          =</span> <span class="st">&quot;year&quot;</span>,</span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>  <span class="at">gvar          =</span> <span class="st">&quot;gvar&quot;</span>,</span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>  <span class="at">rolling       =</span> <span class="st">&quot;demean&quot;</span>,</span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a>  <span class="at">control_group =</span> <span class="st">&quot;never_treated&quot;</span>,</span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a>  <span class="at">aggregate     =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a>  <span class="at">vce           =</span> <span class="st">&quot;hc3&quot;</span></span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a>)</span>
+<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a></span>
+<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">Total (g,r) pairs estimated: %d</span><span class="sc">\n</span><span class="st">&quot;</span>, <span class="fu">nrow</span>(res_none<span class="sc">$</span>att_by_cohort_time)))</span></code></pre></div>
+<pre><code>## 
+## Total (g,r) pairs estimated: 20</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">kable</span>(</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>  <span class="fu">head</span>(res_none<span class="sc">$</span>att_by_cohort_time[, <span class="fu">c</span>(<span class="st">&quot;cohort&quot;</span>, <span class="st">&quot;period&quot;</span>, <span class="st">&quot;event_time&quot;</span>,</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>                                         <span class="st">&quot;att&quot;</span>, <span class="st">&quot;se&quot;</span>, <span class="st">&quot;pvalue&quot;</span>)], <span class="dv">15</span>),</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">4</span>,</span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">&quot;(g, r)-Specific Effects (Equation 7.8, Lee &amp; Wooldridge 2025)&quot;</span></span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>)</span></code></pre></div>
+<table>
+<caption>(g, r)-Specific Effects (Equation 7.8, Lee &amp; Wooldridge
+2025)</caption>
+<thead>
+<tr class="header">
+<th align="right">cohort</th>
+<th align="right">period</th>
+<th align="right">event_time</th>
+<th align="right">att</th>
+<th align="right">se</th>
+<th align="right">pvalue</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2005</td>
+<td align="right">2005</td>
+<td align="right">0</td>
+<td align="right">-0.1332</td>
+<td align="right">0.0283</td>
+<td align="right">0.0001</td>
+</tr>
+<tr class="even">
+<td align="right">2005</td>
+<td align="right">2006</td>
+<td align="right">1</td>
+<td align="right">0.0861</td>
+<td align="right">0.0345</td>
+<td align="right">0.0187</td>
+</tr>
+<tr class="odd">
+<td align="right">2005</td>
+<td align="right">2007</td>
+<td align="right">2</td>
+<td align="right">0.1640</td>
+<td align="right">0.0469</td>
+<td align="right">0.0016</td>
+</tr>
+<tr class="even">
+<td align="right">2005</td>
+<td align="right">2008</td>
+<td align="right">3</td>
+<td align="right">0.1367</td>
+<td align="right">0.0507</td>
+<td align="right">0.0117</td>
+</tr>
+<tr class="odd">
+<td align="right">2005</td>
+<td align="right">2009</td>
+<td align="right">4</td>
+<td align="right">0.1284</td>
+<td align="right">0.0448</td>
+<td align="right">0.0079</td>
+</tr>
+<tr class="even">
+<td align="right">2005</td>
+<td align="right">2010</td>
+<td align="right">5</td>
+<td align="right">0.0990</td>
+<td align="right">0.0488</td>
+<td align="right">0.0520</td>
+</tr>
+<tr class="odd">
+<td align="right">2006</td>
+<td align="right">2006</td>
+<td align="right">0</td>
+<td align="right">0.0663</td>
+<td align="right">0.0839</td>
+<td align="right">0.4342</td>
+</tr>
+<tr class="even">
+<td align="right">2006</td>
+<td align="right">2007</td>
+<td align="right">1</td>
+<td align="right">0.1186</td>
+<td align="right">0.0935</td>
+<td align="right">0.2119</td>
+</tr>
+<tr class="odd">
+<td align="right">2006</td>
+<td align="right">2008</td>
+<td align="right">2</td>
+<td align="right">0.0220</td>
+<td align="right">0.1141</td>
+<td align="right">0.8478</td>
+</tr>
+<tr class="even">
+<td align="right">2006</td>
+<td align="right">2009</td>
+<td align="right">3</td>
+<td align="right">0.0871</td>
+<td align="right">0.1077</td>
+<td align="right">0.4230</td>
+</tr>
+<tr class="odd">
+<td align="right">2006</td>
+<td align="right">2010</td>
+<td align="right">4</td>
+<td align="right">0.0471</td>
+<td align="right">0.0838</td>
+<td align="right">0.5771</td>
+</tr>
+<tr class="even">
+<td align="right">2007</td>
+<td align="right">2007</td>
+<td align="right">0</td>
+<td align="right">0.1311</td>
+<td align="right">0.1971</td>
+<td align="right">0.5110</td>
+</tr>
+<tr class="odd">
+<td align="right">2007</td>
+<td align="right">2008</td>
+<td align="right">1</td>
+<td align="right">-0.0767</td>
+<td align="right">0.1511</td>
+<td align="right">0.6152</td>
+</tr>
+<tr class="even">
+<td align="right">2007</td>
+<td align="right">2009</td>
+<td align="right">2</td>
+<td align="right">0.2567</td>
+<td align="right">0.1506</td>
+<td align="right">0.0983</td>
+</tr>
+<tr class="odd">
+<td align="right">2007</td>
+<td align="right">2010</td>
+<td align="right">3</td>
+<td align="right">0.1452</td>
+<td align="right">0.1460</td>
+<td align="right">0.3277</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="numerical-checks" class="section level2">
+<h2>Numerical Checks</h2>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;=== Numerical Verification ===</span><span class="sc">\n\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>## === Numerical Verification ===</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>tol <span class="ot">&lt;-</span> <span class="fl">0.001</span></span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>checks <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;Demeaning ATT&quot;</span>,   <span class="at">got =</span> res_demean_ols<span class="sc">$</span>att_overall, <span class="at">ref =</span> <span class="fl">0.092</span>),</span>
+<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;OLS SE&quot;</span>,          <span class="at">got =</span> res_demean_ols<span class="sc">$</span>se_overall,  <span class="at">ref =</span> <span class="fl">0.057</span>),</span>
+<span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;OLS t-stat&quot;</span>,      <span class="at">got =</span> res_demean_ols<span class="sc">$</span>tstat,       <span class="at">ref =</span> <span class="fl">1.607</span>),</span>
+<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;HC3 t-stat&quot;</span>,      <span class="at">got =</span> res_demean_hc3<span class="sc">$</span>tstat,       <span class="at">ref =</span> <span class="fl">1.50</span>),</span>
+<span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;Detrending ATT&quot;</span>,  <span class="at">got =</span> res_detrend_hc3<span class="sc">$</span>att_overall,<span class="at">ref =</span> <span class="fl">0.067</span>),</span>
+<span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">label =</span> <span class="st">&quot;Detrend HC3 t&quot;</span>,   <span class="at">got =</span> res_detrend_hc3<span class="sc">$</span>tstat,      <span class="at">ref =</span> <span class="fl">1.21</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" tabindex="-1"></a>)</span>
+<span id="cb27-10"><a href="#cb27-10" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" tabindex="-1"></a>all_pass <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb27-12"><a href="#cb27-12" tabindex="-1"></a><span class="cf">for</span> (chk <span class="cf">in</span> checks) {</span>
+<span id="cb27-13"><a href="#cb27-13" tabindex="-1"></a>  diff  <span class="ot">&lt;-</span> <span class="fu">abs</span>(chk<span class="sc">$</span>got <span class="sc">-</span> chk<span class="sc">$</span>ref)</span>
+<span id="cb27-14"><a href="#cb27-14" tabindex="-1"></a>  pass  <span class="ot">&lt;-</span> diff <span class="sc">&lt;</span> tol</span>
+<span id="cb27-15"><a href="#cb27-15" tabindex="-1"></a>  all_pass <span class="ot">&lt;-</span> all_pass <span class="sc">&amp;&amp;</span> pass</span>
+<span id="cb27-16"><a href="#cb27-16" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;%-20s  got: %7.4f  ref: %5.3f  diff: %.5f  %s</span><span class="sc">\n</span><span class="st">&quot;</span>,</span>
+<span id="cb27-17"><a href="#cb27-17" tabindex="-1"></a>              chk<span class="sc">$</span>label, chk<span class="sc">$</span>got, chk<span class="sc">$</span>ref, diff,</span>
+<span id="cb27-18"><a href="#cb27-18" tabindex="-1"></a>              <span class="cf">if</span> (pass) <span class="st">&quot;PASS&quot;</span> <span class="cf">else</span> <span class="st">&quot;FAIL&quot;</span>))</span>
+<span id="cb27-19"><a href="#cb27-19" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## Demeaning ATT         got:  0.0917  ref: 0.092  diff: 0.00025  PASS
+## OLS SE                got:  0.0571  ref: 0.057  diff: 0.00010  PASS
+## OLS t-stat            got:  1.6067  ref: 1.607  diff: 0.00033  PASS
+## HC3 t-stat            got:  1.4997  ref: 1.500  diff: 0.00026  PASS
+## Detrending ATT        got:  0.0666  ref: 0.067  diff: 0.00045  PASS
+## Detrend HC3 t         got:  1.2102  ref: 1.210  diff: 0.00024  PASS</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">All checks pass: %s</span><span class="sc">\n</span><span class="st">&quot;</span>, all_pass))</span></code></pre></div>
+<pre><code>## 
+## All checks pass: TRUE</code></pre>
+<hr />
+</div>
+<div id="session-info" class="section level2">
+<h2>Session Info</h2>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<pre><code>## R version 4.5.2 (2025-10-31)
+## Platform: x86_64-pc-linux-gnu
+## Running under: Ubuntu 24.04.4 LTS
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/atlas/libblas.so.3.10.3 
+## LAPACK: /usr/lib/x86_64-linux-gnu/atlas/liblapack.so.3.10.3;  LAPACK version 3.11.0
+## 
+## locale:
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+##  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+## 
+## time zone: America/New_York
+## tzcode source: system (glibc)
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] knitr_1.51   lwdidR_0.1.0
+## 
+## loaded via a namespace (and not attached):
+##  [1] digest_0.6.39   R6_2.6.1        fastmap_1.2.0   xfun_0.56      
+##  [5] cachem_1.1.0    htmltools_0.5.9 rmarkdown_2.30  lifecycle_1.0.5
+##  [9] cli_3.6.5       sass_0.4.10     jquerylib_0.1.4 compiler_4.5.2 
+## [13] tools_4.5.2     evaluate_1.0.5  bslib_0.10.0    yaml_2.3.12    
+## [17] otel_0.2.0      rlang_1.1.7     jsonlite_2.0.0</code></pre>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
