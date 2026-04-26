@@ -7,3 +7,9 @@
 ^\.Rbuildignore$
 ^output$
 ^man-roxygen$
+^\.claude$
+^README\.html$
+^vignettes/.*\.html$
+^vignettes/simulation_comparison\.Rmd$
+^tests/testthat/Rplots\.pdf$
+^\.\.Rcheck$

@@ -1,15 +1,18 @@
 Package: lwdidR
 Title: Lee-Wooldridge Difference-in-Differences via Unit-Specific Transformations
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: person("Xiang", "Ao", role = c("aut", "cre"), email = "xiangao@example.com")
 Author: Xiang Ao [aut, cre]
 Maintainer: Xiang Ao <xiangao@example.com>
 Description: Implements the Lee & Wooldridge (2025) panel difference-in-differences
     estimator via unit-specific pre-treatment transformations (demean, detrend,
     demeanq, detrendq). Supports both common-timing and staggered adoption designs
-    with cohort-specific aggregation. Standard errors include homoskedastic OLS, HC1,
-    HC3 (all implemented via manual sandwich), and cluster-robust. Replicates results
-    from Lee & Wooldridge (2025) Section 7.2 (Castle Doctrine law application).
+    with cohort-specific aggregation. Inference options include homoskedastic OLS,
+    HC1, HC3 (manual sandwich), cluster-robust, wild cluster bootstrap
+    (Rademacher weights), and permutation/randomisation inference. The last two are
+    distribution-free and recommended at small N or with non-normal errors.
+    Replicates results from Lee & Wooldridge (2025) Section 7.2 (Castle Doctrine
+    law application).
 License: MIT + file LICENSE
 URL: https://github.com/xiangao/lwdidR
 BugReports: https://github.com/xiangao/lwdidR/issues

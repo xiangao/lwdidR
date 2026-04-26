@@ -30,9 +30,17 @@
 #' @param aggregate Character. Aggregation level for staggered designs:
 #'   `"overall"` (default), `"cohort"`, or `"none"` (returns all (g,r) pairs).
 #' @param vce Character or NULL. Variance-covariance estimator:
-#'   `NULL` (homoskedastic OLS), `"hc1"`, `"hc3"`, or `"cluster"`.
+#'   `NULL` (homoskedastic OLS), `"hc1"`, `"hc3"`, `"cluster"`,
+#'   `"wildboot"` (wild cluster bootstrap), or `"permutation"` (randomisation
+#'   inference). The last two are distribution-free and recommended at small N.
 #' @param cluster_var Character or NULL. Column name for clustering; required
 #'   when `vce = "cluster"`.
+#' @param nboot Integer. Number of bootstrap replications for `vce = "wildboot"`
+#'   (default 999).
+#' @param nperm Integer. Number of permutations for `vce = "permutation"`
+#'   (default 999).
+#' @param vce_inner Character. Inner variance estimator used when computing the
+#'   observed t-statistic inside the wild bootstrap (default `"hc3"`).
 #' @param controls Character vector or NULL. Names of time-invariant control
 #'   variables to include in the cross-sectional regression.
 #' @param season_var Character or NULL. Column name of the seasonal indicator
@@ -74,7 +82,8 @@ lwdid <- function(data, y, ivar, tvar,
                   aggregate = "overall",
                   vce = NULL, cluster_var = NULL,
                   controls = NULL,
-                  season_var = NULL) {
+                  season_var = NULL,
+                  nboot = 999, nperm = 999, vce_inner = "hc3") {
 
   # Input validation
   stopifnot(is.data.frame(data))
@@ -83,6 +92,10 @@ lwdid <- function(data, y, ivar, tvar,
   }
   if (!rolling %in% c("demean", "detrend", "demeanq", "detrendq")) {
     stop("rolling must be one of: demean, detrend, demeanq, detrendq")
+  }
+  valid_vce_all <- c("hc1", "hc3", "cluster", "wildboot", "permutation")
+  if (!is.null(vce) && !tolower(vce) %in% valid_vce_all) {
+    stop(sprintf("vce must be NULL or one of: %s", paste(valid_vce_all, collapse = ", ")))
   }
 
   # Dispatch
@@ -102,7 +115,10 @@ lwdid <- function(data, y, ivar, tvar,
       vce           = vce,
       cluster_var   = cluster_var,
       controls      = controls,
-      season_var    = season_var
+      season_var    = season_var,
+      nboot         = nboot,
+      nperm         = nperm,
+      vce_inner     = vce_inner
     )
 
     out <- structure(
@@ -133,23 +149,31 @@ lwdid <- function(data, y, ivar, tvar,
     post_periods <- sort(unique(data[[tvar]][data[[post]] == 1]))
     tpost1       <- min(post_periods)
 
+    # Treatment indicator: units that ever have post == 1
+    treated_units <- unique(data[[ivar]][data[[post]] == 1])
+
+    # Calendar post indicator: 1 for ALL units once t >= tpost1.
+    # This is passed to apply_transform so that control units (which always
+    # have post == 0 in the user-supplied column) still get ydot_postavg
+    # computed and appear in the firstpost cross-section.
+    data$.post_cal_ <- as.integer(data[[tvar]] >= tpost1)
+
     df_trans <- apply_transform(
       df        = data,
       y         = y,
       ivar      = ivar,
       tindex    = tvar,
-      post      = post,
+      post      = ".post_cal_",
       rolling   = rolling,
       tpost1    = tpost1,
       season_var = season_var
     )
 
-    # Treatment indicator: 1 if unit ever treated (post==1 for any period)
-    treated_units <- unique(data[[ivar]][data[[post]] == 1])
     df_trans$d_ <- as.integer(df_trans[[ivar]] %in% treated_units)
 
     att_res <- estimate_att(df_trans, d = "d_", vce = vce,
-                            cluster_var = cluster_var, controls = controls)
+                            cluster_var = cluster_var, controls = controls,
+                            nboot = nboot, nperm = nperm, vce_inner = vce_inner)
 
     per_res <- estimate_period_effects(
       df          = df_trans,
@@ -158,7 +182,10 @@ lwdid <- function(data, y, ivar, tvar,
       post_periods = post_periods,
       vce         = vce,
       cluster_var  = cluster_var,
-      controls    = controls
+      controls    = controls,
+      nboot       = nboot,
+      nperm       = nperm,
+      vce_inner   = vce_inner
     )
 
     out <- structure(

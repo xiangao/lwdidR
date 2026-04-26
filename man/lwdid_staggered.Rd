@@ -16,7 +16,10 @@ lwdid_staggered(
   vce = NULL,
   cluster_var = NULL,
   controls = NULL,
-  season_var = NULL
+  season_var = NULL,
+  nboot = 999,
+  nperm = 999,
+  vce_inner = "hc3"
 )
 }
 \arguments{

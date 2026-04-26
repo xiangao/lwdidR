@@ -30,4 +30,3 @@ Data frame with added columns: ydot, ydot_postavg, firstpost
 Computes ydot (residualised outcome), ydot_postavg (post-treatment average
 of ydot per unit), and marks the firstpost cross-section.
 }
-\keyword{internal}

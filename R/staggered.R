@@ -37,7 +37,10 @@ lwdid_staggered <- function(data, y, ivar, tvar, gvar,
                              vce           = NULL,
                              cluster_var   = NULL,
                              controls      = NULL,
-                             season_var    = NULL) {
+                             season_var    = NULL,
+                             nboot         = 999,
+                             nperm         = 999,
+                             vce_inner     = "hc3") {
 
   never_mask  <- is.na(data[[gvar]]) | data[[gvar]] == 0 | is.infinite(data[[gvar]])
   cohorts     <- sort(unique(data[[gvar]][!never_mask]))
@@ -121,7 +124,8 @@ lwdid_staggered <- function(data, y, ivar, tvar, gvar,
     fit <- .ols_fit(X, samp_ybar)
     res <- .extract_inference(fit, vce,
               if (!is.null(vce) && tolower(vce) == "cluster")
-                data[[cluster_var]][match(sample_units, data[[ivar]])] else NULL)
+                data[[cluster_var]][match(sample_units, data[[ivar]])] else NULL,
+              nboot = nboot, nperm = nperm, vce_inner = vce_inner)
 
     post_periods <- all_periods[all_periods >= g]
     cohort_res[[gkey]] <- list(
@@ -188,7 +192,8 @@ lwdid_staggered <- function(data, y, ivar, tvar, gvar,
   fit_pool <- .ols_fit(X_pool, Y_reg)
   cvec_pool <- if (!is.null(vce) && tolower(vce) == "cluster")
     data[[cluster_var]][match(unit_ids_reg, data[[ivar]])] else NULL
-  res_pool <- .extract_inference(fit_pool, vce, cvec_pool)
+  res_pool <- .extract_inference(fit_pool, vce, cvec_pool,
+                                  nboot = nboot, nperm = nperm, vce_inner = vce_inner)
 
   att_overall_list <- list(
     att      = res_pool$att, se     = res_pool$se,
@@ -228,7 +233,8 @@ lwdid_staggered <- function(data, y, ivar, tvar, gvar,
     per_res <- estimate_period_effects(
       df = df_t, d = "d_g", tindex = tvar,
       post_periods = post_periods, vce = vce,
-      cluster_var = cluster_var, controls = controls)
+      cluster_var = cluster_var, controls = controls,
+      nboot = nboot, nperm = nperm, vce_inner = vce_inner)
 
     for (ri in seq_len(nrow(per_res))) {
       r     <- per_res$tindex[ri]

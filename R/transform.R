@@ -16,7 +16,7 @@
 #' @param tpost1 First post-treatment period index
 #' @param season_var Column name of seasonal indicator (required for demeanq/detrendq)
 #' @return Data frame with added columns: ydot, ydot_postavg, firstpost
-#' @keywords internal
+#' @export
 apply_transform <- function(df, y, ivar, tindex, post, rolling, tpost1,
                             season_var = NULL) {
   df <- df  # work on copy (R passes by value)

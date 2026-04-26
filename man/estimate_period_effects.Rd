@@ -11,7 +11,10 @@ estimate_period_effects(
   post_periods,
   vce = NULL,
   cluster_var = NULL,
-  controls = NULL
+  controls = NULL,
+  nboot = 999,
+  nperm = 999,
+  vce_inner = "hc3"
 )
 }
 \arguments{

@@ -4,7 +4,16 @@
 \alias{estimate_att}
 \title{Estimate ATT via OLS on firstpost cross-section (uses ydot_postavg)}
 \usage{
-estimate_att(df, d, vce = NULL, cluster_var = NULL, controls = NULL)
+estimate_att(
+  df,
+  d,
+  vce = NULL,
+  cluster_var = NULL,
+  controls = NULL,
+  nboot = 999,
+  nperm = 999,
+  vce_inner = "hc3"
+)
 }
 \arguments{
 \item{df}{Transformed data with ydot_postavg and firstpost columns}

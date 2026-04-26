@@ -2,4 +2,5 @@
 
 S3method(print,lwdid)
 S3method(summary,lwdid)
+export(apply_transform)
 export(lwdid)

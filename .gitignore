@@ -19,6 +19,11 @@
 # built package artifacts
 *.tar.gz
 *.Rcheck/
+..Rcheck/
+README.html
+vignettes/*.html
+tests/testthat/Rplots.pdf
+.claude/
 
 # OS files
 .DS_Store

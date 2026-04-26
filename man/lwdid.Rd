@@ -17,7 +17,10 @@ lwdid(
   vce = NULL,
   cluster_var = NULL,
   controls = NULL,
-  season_var = NULL
+  season_var = NULL,
+  nboot = 999,
+  nperm = 999,
+  vce_inner = "hc3"
 )
 }
 \arguments{
@@ -52,7 +55,9 @@ pre-treatment observations:
 \code{"overall"} (default), \code{"cohort"}, or \code{"none"} (returns all (g,r) pairs).}
 
 \item{vce}{Character or NULL. Variance-covariance estimator:
-\code{NULL} (homoskedastic OLS), \code{"hc1"}, \code{"hc3"}, or \code{"cluster"}.}
+\code{NULL} (homoskedastic OLS), \code{"hc1"}, \code{"hc3"}, \code{"cluster"},
+\code{"wildboot"} (wild cluster bootstrap), or \code{"permutation"} (randomisation
+inference). The last two are distribution-free and recommended at small N.}
 
 \item{cluster_var}{Character or NULL. Column name for clustering; required
 when \code{vce = "cluster"}.}
@@ -62,6 +67,15 @@ variables to include in the cross-sectional regression.}
 
 \item{season_var}{Character or NULL. Column name of the seasonal indicator
 (required for \code{rolling = "demeanq"} or \code{"detrendq"}).}
+
+\item{nboot}{Integer. Number of bootstrap replications for \code{vce = "wildboot"}
+(default 999).}
+
+\item{nperm}{Integer. Number of permutations for \code{vce = "permutation"}
+(default 999).}
+
+\item{vce_inner}{Character. Inner variance estimator used when computing the
+observed t-statistic inside the wild bootstrap (default \code{"hc3"}).}
 }
 \value{
 An object of class \code{"lwdid"}, a list containing:
