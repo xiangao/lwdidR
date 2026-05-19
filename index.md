@@ -70,8 +70,7 @@ Castle Doctrine laws and log homicide rates:
 | Detrending (HC3 SE) | 0.0666 | 0.0550 | 1.210  |
 
 All results match paper Table 7.2 within tolerance 0.001. See
-[`vignette("castle_law")`](https://xiangao.github.io/lwdidR/articles/castle_law.md)
-for full replication.
+`vignette("castle_law")` for full replication.
 
 ## Key Functions
 
