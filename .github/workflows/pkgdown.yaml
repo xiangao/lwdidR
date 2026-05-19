@@ -30,9 +30,20 @@ jobs:
           extra-packages: any::pkgdown, local::.
           needs: website
 
+      - name: Use pre-rendered vignette HTML
+        run: |
+          mkdir -p .pkgdown-vignettes
+          find vignettes -maxdepth 1 -name '*.Rmd' -exec mv {} .pkgdown-vignettes/ \;
+          Rscript -e 'cfg <- yaml::read_yaml("_pkgdown.yml"); cfg$articles <- NULL; cfg$navbar$structure$left <- setdiff(cfg$navbar$structure$left, "articles"); yaml::write_yaml(cfg, "_pkgdown.yml")'
+
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
+
+      - name: Copy vignette HTML
+        run: |
+          mkdir -p docs/articles
+          cp vignettes/*.html docs/articles/ 2>/dev/null || true
 
       - name: Deploy to GitHub Pages
         if: github.event_name != 'pull_request'
@@ -41,4 +52,3 @@ jobs:
           clean: false
           branch: gh-pages
           folder: docs
-
