@@ -1,0 +1,26 @@
+url: https://xiangao.github.io/lwdidR/
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [search, github]
+
+reference:
+  - title: Main estimator
+    contents:
+      - lwdid
+      - apply_transform
+  - title: Results
+    contents:
+      - print.lwdid
+      - summary.lwdid
+
+articles:
+  - title: Vignettes
+    contents:
+      - castle_law
+      - simulation_comparison
+

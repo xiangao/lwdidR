@@ -1,5 +1,7 @@
 # lwdidR
 
+[![pkgdown](https://img.shields.io/badge/pkgdown-site-blue.svg)](https://xiangao.github.io/lwdidR/)
+
 R implementation of the Lee & Wooldridge (2025) panel difference-in-differences estimator via unit-specific pre-treatment transformations.
 
 ## Installation
@@ -70,6 +72,17 @@ All results match paper Table 7.2 within tolerance 0.001. See `vignette("castle_
 | `lwdid()` | Main estimator (common-timing and staggered) |
 | `print.lwdid()` | Compact results display |
 | `summary.lwdid()` | Results + period/cohort details |
+
+## Documentation & vignettes
+
+Full documentation: **<https://xiangao.github.io/lwdidR/>**
+
+| Page | Description |
+|------|-------------|
+| [Castle Law replication](https://xiangao.github.io/lwdidR/articles/castle_law.html) | Full Lee-Wooldridge Section 7.2 replication |
+| [Simulation comparison](https://xiangao.github.io/lwdidR/articles/simulation_comparison.html) | Simulation comparison across transformations |
+| [`lwdid()`](https://xiangao.github.io/lwdidR/reference/lwdid.html) | Main estimator |
+| [Reference index](https://xiangao.github.io/lwdidR/reference/index.html) | All documented functions on one page |
 
 ## Algorithm Notes
 

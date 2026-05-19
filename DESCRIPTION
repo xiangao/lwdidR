@@ -14,7 +14,7 @@ Description: Implements the Lee & Wooldridge (2025) panel difference-in-differen
     Replicates results from Lee & Wooldridge (2025) Section 7.2 (Castle Doctrine
     law application).
 License: MIT + file LICENSE
-URL: https://github.com/xiangao/lwdidR
+URL: https://xiangao.github.io/lwdidR/, https://github.com/xiangao/lwdidR
 BugReports: https://github.com/xiangao/lwdidR/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
