@@ -2,7 +2,10 @@
 
 [![pkgdown](https://img.shields.io/badge/pkgdown-site-blue.svg)](https://xiangao.github.io/lwdidR/)
 
-R implementation of the Lee & Wooldridge (2025) panel difference-in-differences estimator via unit-specific pre-treatment transformations.
+`lwdidR` is an R implementation of the Lee and Wooldridge (2025) panel
+difference-in-differences estimator. The estimator first transforms outcomes
+using only each unit's pre-treatment observations, then estimates the treatment
+effect in a cross section.
 
 ## Installation
 
@@ -17,9 +20,11 @@ devtools::install_github("xiangao/lwdidR")
 
 > Lee, Y., & Wooldridge, J. M. (2025). A simple panel data approach to difference-in-differences under general treatment patterns.
 
-The key idea: residualise each unit's outcome using only its own pre-treatment observations (demean or detrend), then run a pooled cross-sectional OLS. This sidesteps the Callaway-Sant'Anna / Sun-Abraham aggregation issues while allowing flexible control for unit-specific trends.
+The key idea is simple: residualize each unit's outcome using its own
+pre-treatment observations, either by demeaning or detrending, and then run a
+pooled cross-sectional OLS.
 
-**Supports:**
+The package supports:
 - Common-timing and staggered adoption designs
 - Transformation methods: `demean`, `detrend`, `demeanq`, `detrendq`
 - Standard errors: homoskedastic OLS, HC1, HC3, cluster-robust
@@ -65,7 +70,7 @@ Castle Doctrine laws and log homicide rates:
 
 All results match paper Table 7.2 within tolerance 0.001. See `vignette("castle_law")` for full replication.
 
-## Key Functions
+## Main functions
 
 | Function | Description |
 |----------|-------------|
