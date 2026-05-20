@@ -50,7 +50,7 @@
 <div class="page-header"><h1 id="lwdidr">lwdidR<a class="anchor" aria-label="anchor" href="#lwdidr"></a>
 </h1></div>
 <p><a href="https://xiangao.github.io/lwdidR/"><img src="https://img.shields.io/badge/pkgdown-site-blue.svg" alt="pkgdown"></a></p>
-<p>R implementation of the Lee &amp; Wooldridge (2025) panel difference-in-differences estimator via unit-specific pre-treatment transformations.</p>
+<p><code>lwdidR</code> is an R implementation of the Lee and Wooldridge (2025) panel difference-in-differences estimator. The estimator first transforms outcomes using only each unit’s pre-treatment observations, then estimates the treatment effect in a cross section.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -65,8 +65,8 @@
 <blockquote>
 <p>Lee, Y., &amp; Wooldridge, J. M. (2025). A simple panel data approach to difference-in-differences under general treatment patterns.</p>
 </blockquote>
-<p>The key idea: residualise each unit’s outcome using only its own pre-treatment observations (demean or detrend), then run a pooled cross-sectional OLS. This sidesteps the Callaway-Sant’Anna / Sun-Abraham aggregation issues while allowing flexible control for unit-specific trends.</p>
-<p><strong>Supports:</strong> - Common-timing and staggered adoption designs - Transformation methods: <code>demean</code>, <code>detrend</code>, <code>demeanq</code>, <code>detrendq</code> - Standard errors: homoskedastic OLS, HC1, HC3, cluster-robust - Cohort-specific ATTs and (g,r)-level event-study estimates</p>
+<p>The key idea is simple: residualize each unit’s outcome using its own pre-treatment observations, either by demeaning or detrending, and then run a pooled cross-sectional OLS.</p>
+<p>The package supports: - Common-timing and staggered adoption designs - Transformation methods: <code>demean</code>, <code>detrend</code>, <code>demeanq</code>, <code>detrendq</code> - Standard errors: homoskedastic OLS, HC1, HC3, cluster-robust - Cohort-specific ATTs and (g,r)-level event-study estimates</p>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
@@ -125,10 +125,10 @@ p-value:       0.1376</code></pre>
 </tr>
 </tbody>
 </table>
-<p>All results match paper Table 7.2 within tolerance 0.001. See <code>vignette("castle_law")</code> for full replication.</p>
+<p>All results match paper Table 7.2 within tolerance 0.001. See <code><a href="https://xiangao.github.io/lwdidR/articles/castle_law.html">vignette("castle_law")</a></code> for full replication.</p>
 </div>
 <div class="section level2">
-<h2 id="key-functions">Key Functions<a class="anchor" aria-label="anchor" href="#key-functions"></a>
+<h2 id="main-functions">Main functions<a class="anchor" aria-label="anchor" href="#main-functions"></a>
 </h2>
 <table class="table">
 <thead><tr>
