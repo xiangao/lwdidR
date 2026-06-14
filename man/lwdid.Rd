@@ -11,6 +11,7 @@ lwdid(
   tvar,
   gvar = NULL,
   post = NULL,
+  dvar = NULL,
   rolling = "demean",
   control_group = "never_treated",
   aggregate = "overall",
@@ -38,6 +39,12 @@ Set to \code{NULL} (default) for common-timing designs (supply \code{post} inste
 
 \item{post}{Character or NULL. Name of a binary post-treatment indicator column
 (0 = pre, 1 = post). Required when \code{gvar = NULL}; ignored otherwise.}
+
+\item{dvar}{Character or NULL. Name of a unit-level treatment-group indicator
+for common-timing designs. If omitted, \code{lwdid()} keeps backwards-compatible
+behavior when \code{post} is the treatment-on indicator; if \code{post} is a
+calendar post indicator, it looks for an unambiguous unit-invariant treatment
+column named \code{treat}, \code{treated}, \code{D}, or \code{d}.}
 
 \item{rolling}{Character. Transformation method applied to each unit's
 pre-treatment observations:

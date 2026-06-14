@@ -17,6 +17,11 @@
 #'   Set to `NULL` (default) for common-timing designs (supply `post` instead).
 #' @param post Character or NULL. Name of a binary post-treatment indicator column
 #'   (0 = pre, 1 = post). Required when `gvar = NULL`; ignored otherwise.
+#' @param dvar Character or NULL. Name of a unit-level treatment-group indicator
+#'   for common-timing designs. If omitted, `lwdid()` keeps backwards-compatible
+#'   behavior when `post` is the treatment-on indicator; if `post` is a calendar
+#'   post indicator, it looks for an unambiguous unit-invariant treatment column
+#'   named `treat`, `treated`, `D`, or `d`.
 #' @param rolling Character. Transformation method applied to each unit's
 #'   pre-treatment observations:
 #'   \describe{
@@ -76,7 +81,7 @@
 #'
 #' @export
 lwdid <- function(data, y, ivar, tvar,
-                  gvar = NULL, post = NULL,
+                  gvar = NULL, post = NULL, dvar = NULL,
                   rolling = "demean",
                   control_group = "never_treated",
                   aggregate = "overall",
@@ -96,6 +101,10 @@ lwdid <- function(data, y, ivar, tvar,
   valid_vce_all <- c("hc1", "hc3", "cluster", "wildboot", "permutation")
   if (!is.null(vce) && !tolower(vce) %in% valid_vce_all) {
     stop(sprintf("vce must be NULL or one of: %s", paste(valid_vce_all, collapse = ", ")))
+  }
+  if (!is.null(vce) && tolower(vce) == "cluster") {
+    if (is.null(cluster_var)) stop("vce='cluster' requires cluster_var.")
+    if (!cluster_var %in% names(data)) stop(sprintf("Column '%s' not found in data.", cluster_var))
   }
 
   # Dispatch
@@ -147,10 +156,43 @@ lwdid <- function(data, y, ivar, tvar,
 
     all_periods  <- sort(unique(data[[tvar]]))
     post_periods <- sort(unique(data[[tvar]][data[[post]] == 1]))
+    if (length(post_periods) == 0) stop("No post-treatment periods found.")
     tpost1       <- min(post_periods)
 
-    # Treatment indicator: units that ever have post == 1
-    treated_units <- unique(data[[ivar]][data[[post]] == 1])
+    # Treatment-group indicator. Older callers sometimes used `post` as the
+    # treatment-on indicator D_it; newer/common DiD data usually use `post` as a
+    # calendar post indicator and keep treatment status in a separate column.
+    if (!is.null(dvar)) {
+      if (!dvar %in% names(data)) stop(sprintf("Column '%s' not found in data.", dvar))
+      treated_units <- unique(data[[ivar]][data[[dvar]] == 1])
+    } else {
+      post_by_time <- stats::aggregate(data[[post]], list(data[[tvar]]), function(x) {
+        ux <- unique(stats::na.omit(x))
+        if (length(ux) == 1) ux else NA
+      })[[2]]
+      post_is_calendar <- all(!is.na(post_by_time)) &&
+        any(post_by_time == 0) && any(post_by_time == 1)
+
+      if (post_is_calendar) {
+        candidate_names <- intersect(c("treat", "treated", "D", "d"), names(data))
+        candidate_names <- candidate_names[vapply(candidate_names, function(v) {
+          vals <- unique(stats::na.omit(data[[v]]))
+          unit_vals <- stats::aggregate(data[[v]], list(data[[ivar]]), function(x) {
+            ux <- unique(stats::na.omit(x))
+            length(ux) == 1
+          })[[2]]
+          length(vals) == 2 && all(sort(vals) == c(0, 1)) && all(unit_vals)
+        }, logical(1))]
+        if (length(candidate_names) != 1) {
+          stop("For common-timing designs with a calendar post indicator, supply 'dvar' for the treatment-group indicator.")
+        }
+        dvar <- candidate_names[[1]]
+        treated_units <- unique(data[[ivar]][data[[dvar]] == 1])
+      } else {
+        # Backwards-compatible path: `post` is D_it, so ever-post units are treated.
+        treated_units <- unique(data[[ivar]][data[[post]] == 1])
+      }
+    }
 
     # Calendar post indicator: 1 for ALL units once t >= tpost1.
     # This is passed to apply_transform so that control units (which always
@@ -201,7 +243,7 @@ lwdid <- function(data, y, ivar, tvar,
         N            = att_res$N,
         rolling      = rolling,
         vce          = vce,
-        y = y, ivar = ivar, tvar = tvar, post = post
+        y = y, ivar = ivar, tvar = tvar, post = post, dvar = dvar
       ),
       class = "lwdid"
     )
