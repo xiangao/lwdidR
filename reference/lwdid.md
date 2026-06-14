@@ -16,6 +16,7 @@ lwdid(
   tvar,
   gvar = NULL,
   post = NULL,
+  dvar = NULL,
   rolling = "demean",
   control_group = "never_treated",
   aggregate = "overall",
@@ -58,6 +59,15 @@ lwdid(
 
   Character or NULL. Name of a binary post-treatment indicator column (0
   = pre, 1 = post). Required when `gvar = NULL`; ignored otherwise.
+
+- dvar:
+
+  Character or NULL. Name of a unit-level treatment-group indicator for
+  common-timing designs. If omitted, `lwdid()` keeps
+  backwards-compatible behavior when `post` is the treatment-on
+  indicator; if `post` is a calendar post indicator, it looks for an
+  unambiguous unit-invariant treatment column named `treat`, `treated`,
+  `D`, or `d`.
 
 - rolling:
 

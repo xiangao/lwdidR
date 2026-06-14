@@ -58,6 +58,7 @@ cross-sectional OLS.</p>
 <span>  <span class="va">tvar</span>,</span>
 <span>  gvar <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  post <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dvar <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  rolling <span class="op">=</span> <span class="st">"demean"</span>,</span>
 <span>  control_group <span class="op">=</span> <span class="st">"never_treated"</span>,</span>
 <span>  aggregate <span class="op">=</span> <span class="st">"overall"</span>,</span>
@@ -100,6 +101,14 @@ Set to <code>NULL</code> (default) for common-timing designs (supply <code>post<
 <dt id="arg-post">post<a class="anchor" aria-label="anchor" href="#arg-post"></a></dt>
 <dd><p>Character or NULL. Name of a binary post-treatment indicator column
 (0 = pre, 1 = post). Required when <code>gvar = NULL</code>; ignored otherwise.</p></dd>
+
+
+<dt id="arg-dvar">dvar<a class="anchor" aria-label="anchor" href="#arg-dvar"></a></dt>
+<dd><p>Character or NULL. Name of a unit-level treatment-group indicator
+for common-timing designs. If omitted, <code>lwdid()</code> keeps backwards-compatible
+behavior when <code>post</code> is the treatment-on indicator; if <code>post</code> is a
+calendar post indicator, it looks for an unambiguous unit-invariant treatment
+column named <code>treat</code>, <code>treated</code>, <code>D</code>, or <code>d</code>.</p></dd>
 
 
 <dt id="arg-rolling">rolling<a class="anchor" aria-label="anchor" href="#arg-rolling"></a></dt>
