@@ -67,6 +67,16 @@
 </blockquote>
 <p>The key idea is simple: residualize each unit’s outcome using its own pre-treatment observations, either by demeaning or detrending, and then run a pooled cross-sectional OLS.</p>
 <p>The package supports: - Common-timing and staggered adoption designs - Transformation methods: <code>demean</code>, <code>detrend</code>, <code>demeanq</code>, <code>detrendq</code> - Standard errors: homoskedastic OLS, HC1, HC3, cluster-robust - Cohort-specific ATTs and (g,r)-level event-study estimates</p>
+<div class="section level3">
+<h3 id="common-timing-designs-post-vs-dvar">Common-timing designs: <code>post</code> vs <code>dvar</code>
+<a class="anchor" aria-label="anchor" href="#common-timing-designs-post-vs-dvar"></a>
+</h3>
+<p>For common-timing designs (<code>gvar = NULL</code>), supply a binary <code>post</code> indicator. <code>post</code> can be used two ways, and <code><a href="reference/lwdid.html">lwdid()</a></code> distinguishes them:</p>
+<ul>
+<li>If <code>post</code> is the treatment-on indicator D_it (1 only for treated units in post periods), the ever-post units are the treated group — no extra argument needed (backwards-compatible behavior).</li>
+<li>If <code>post</code> is a <em>calendar</em> post indicator (1 for <strong>all</strong> units once t ≥ first treated period), the treatment group lives in a separate column. Pass it via the new <code>dvar</code> argument, e.g. <code>lwdid(..., post = "post", dvar = "treated")</code>. If <code>dvar</code> is omitted, <code><a href="reference/lwdid.html">lwdid()</a></code> auto-detects an unambiguous unit-invariant <code>treat</code>/<code>treated</code>/<code>D</code>/<code>d</code> column and errors if it cannot resolve one.</li>
+</ul>
+</div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
@@ -125,7 +135,7 @@ p-value:       0.1376</code></pre>
 </tr>
 </tbody>
 </table>
-<p>All results match paper Table 7.2 within tolerance 0.001. See <code>vignette("castle_law")</code> for full replication.</p>
+<p>All results match paper Table 7.2 within tolerance 0.001. See <code><a href="https://xiangao.github.io/lwdidR/articles/castle_law.html">vignette("castle_law")</a></code> for full replication.</p>
 </div>
 <div class="section level2">
 <h2 id="main-functions">Main functions<a class="anchor" aria-label="anchor" href="#main-functions"></a>

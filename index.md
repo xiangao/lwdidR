@@ -31,6 +31,25 @@ Transformation methods: `demean`, `detrend`, `demeanq`, `detrendq` -
 Standard errors: homoskedastic OLS, HC1, HC3, cluster-robust -
 Cohort-specific ATTs and (g,r)-level event-study estimates
 
+### Common-timing designs: `post` vs `dvar`
+
+For common-timing designs (`gvar = NULL`), supply a binary `post`
+indicator. `post` can be used two ways, and
+[`lwdid()`](https://xiangao.github.io/lwdidR/reference/lwdid.md)
+distinguishes them:
+
+- If `post` is the treatment-on indicator D_it (1 only for treated units
+  in post periods), the ever-post units are the treated group — no extra
+  argument needed (backwards-compatible behavior).
+- If `post` is a *calendar* post indicator (1 for **all** units once t ≥
+  first treated period), the treatment group lives in a separate column.
+  Pass it via the new `dvar` argument,
+  e.g. `lwdid(..., post = "post", dvar = "treated")`. If `dvar` is
+  omitted,
+  [`lwdid()`](https://xiangao.github.io/lwdidR/reference/lwdid.md)
+  auto-detects an unambiguous unit-invariant `treat`/`treated`/`D`/`d`
+  column and errors if it cannot resolve one.
+
 ## Quick Start
 
 ``` r
@@ -69,7 +88,8 @@ Castle Doctrine laws and log homicide rates:
 | Detrending (HC3 SE) | 0.0666 | 0.0550 | 1.210  |
 
 All results match paper Table 7.2 within tolerance 0.001. See
-`vignette("castle_law")` for full replication.
+[`vignette("castle_law")`](https://xiangao.github.io/lwdidR/articles/castle_law.html)
+for full replication.
 
 ## Main functions
 
