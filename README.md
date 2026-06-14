@@ -30,6 +30,20 @@ The package supports:
 - Standard errors: homoskedastic OLS, HC1, HC3, cluster-robust
 - Cohort-specific ATTs and (g,r)-level event-study estimates
 
+### Common-timing designs: `post` vs `dvar`
+
+For common-timing designs (`gvar = NULL`), supply a binary `post` indicator.
+`post` can be used two ways, and `lwdid()` distinguishes them:
+
+- If `post` is the treatment-on indicator D_it (1 only for treated units in
+  post periods), the ever-post units are the treated group — no extra argument
+  needed (backwards-compatible behavior).
+- If `post` is a *calendar* post indicator (1 for **all** units once t ≥ first
+  treated period), the treatment group lives in a separate column. Pass it via
+  the new `dvar` argument, e.g. `lwdid(..., post = "post", dvar = "treated")`.
+  If `dvar` is omitted, `lwdid()` auto-detects an unambiguous unit-invariant
+  `treat`/`treated`/`D`/`d` column and errors if it cannot resolve one.
+
 ## Quick Start
 
 ```r
