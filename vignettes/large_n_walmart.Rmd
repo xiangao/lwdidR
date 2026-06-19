@@ -1,0 +1,112 @@
+---
+title: "Large-N Rolling DiD: The Walmart Application (Lee & Wooldridge 2026a)"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Large-N Rolling DiD: The Walmart Application (Lee & Wooldridge 2026a)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE,
+                      fig.width = 7, fig.height = 4.2, cache = TRUE)
+walmart_path <- system.file("extdata", "lw_walmart.rds", package = "lwdidR")
+have_data <- nzchar(walmart_path) && file.exists(walmart_path)
+knitr::opts_chunk$set(eval = have_data)
+```
+
+## Overview
+
+The **large-N path** of `lwdidR` implements the doubly-robust rolling
+difference-in-differences estimator of Lee & Wooldridge (2026a). It is activated
+by setting `method` to one of:
+
+- `"ra"` — regression adjustment,
+- `"ipw"` — inverse-probability weighting,
+- `"ipwra"` — doubly-robust IPWRA (inverse-probability-weighted regression adjustment).
+
+For each treatment cohort `g` and calendar period `t`, the outcome is residualised
+by removing each unit's own pre-treatment mean (`rolling = "demean"`) or linear
+trend (`rolling = "detrend"`); an ATT(g,t) is then estimated on the eligible
+control cross-section. The cell estimates are aggregated to the **event-study
+WATT(r)** path (cohort-size-weighted by relative period r, where r = t − g) plus overall
+**Pre/Post averages**. Inference uses a **wild cluster bootstrap** with
+**simultaneous (sup-t) confidence bands** for the event-study path; the Pre/Post
+averages use pointwise normal intervals.
+
+> This vignette uses the `lw_walmart` data from the original Stata `lwdid`
+> package, bundled with `lwdidR` (see Citation). It revisits the effect of
+> Walmart store openings on county-level employment.
+
+```{r data}
+library(lwdidR)
+walmart <- readRDS(system.file("extdata", "lw_walmart.rds", package = "lwdidR"))
+str(walmart)
+```
+
+Variables: `cid` (county id), `year`, `first_year` (cohort; `0` = never opened a
+Walmart in-window), `log_wholesale_emp` (outcome), and covariates `x1`, `x2`, `x3`.
+
+## Regression adjustment (demean)
+
+```{r ra}
+ra <- lwdid(walmart, "log_wholesale_emp", "cid", "year", gvar = "first_year",
+            rolling = "demean", method = "ra",
+            controls = c("x1", "x2", "x3"), reps = 199, seed = 1)
+print(ra)
+```
+
+These estimates reproduce the Stata `lwdid` v2.4 output to ~`1e-9` for the point
+estimates, with bootstrap standard errors agreeing to within Monte-Carlo error
+(see `data-raw/stata-reference/`).
+
+## Doubly-robust IPWRA (detrend)
+
+This mirrors the recommended specification when parallel trends may be violated:
+unit-specific **detrending** with the **doubly-robust** estimator.
+
+```{r ipwra}
+dr <- lwdid(walmart, "log_wholesale_emp", "cid", "year", gvar = "first_year",
+            rolling = "detrend", method = "ipwra",
+            controls = c("x1", "x2", "x3"), reps = 199, seed = 1)
+print(dr)
+```
+
+### Event-study plot
+
+```{r plot}
+plot(dr)
+```
+
+The bars are **simultaneous** (sup-t) confidence bands across event times; the
+pre-treatment periods provide an informal parallel-trends check (with the
+detrending normalisation anchoring r = −1 and r = −2 to zero).
+
+## Options
+
+| Option | Meaning |
+|---|---|
+| `method` | `"ra"`, `"ipw"`, `"ipwra"` (required for the large-N path) |
+| `rolling` | `"demean"` or `"detrend"` |
+| `controls` | covariate names (required for `ipw`/`ipwra`) |
+| `pre` | number of most-recent pre-periods used in the transform (`-1` = all) |
+| `never` | use never-treated controls only (default: not-yet-treated too) |
+| `attgt` | also return the ATT(g,t) cell estimates |
+| `ydot` | also return the per-cohort transformed outcomes |
+| `reps`, `seed` | wild cluster bootstrap replications and seed |
+| `level`, `nose` | confidence level; skip SEs |
+
+For production use, increase `reps` (e.g., 999) for stable bootstrap inference.
+
+## Citation
+
+`lwdidR` is an R port of the original Stata `lwdid` command by Soo Jeong Lee and
+Jeffrey M. Wooldridge (<https://github.com/Soo-econ/lwdid>); the bundled
+`lw_walmart` data ships with that package. The large-N method is:
+
+> Lee, S. J., & Wooldridge, J. M. (2026a). Simple Transformation Approach to
+> Difference-in-Differences Estimation for Panel Data. *Journal of Business &
+> Economic Statistics*, 1–27. <https://doi.org/10.1080/07350015.2026.2683047>
+```

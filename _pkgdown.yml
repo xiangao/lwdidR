@@ -17,10 +17,14 @@ reference:
     contents:
       - print.lwdid
       - summary.lwdid
+      - print.lwdid_large
+      - summary.lwdid_large
+      - plot.lwdid_large
 
 articles:
   - title: Vignettes
     contents:
       - castle_law
       - simulation_comparison
+      - large_n_walmart
 

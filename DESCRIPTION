@@ -1,24 +1,27 @@
 Package: lwdidR
 Title: Lee-Wooldridge Difference-in-Differences via Unit-Specific Transformations
-Version: 0.1.1
-Authors@R: person("Xiang", "Ao", role = c("aut", "cre"), email = "xiangao@example.com")
+Version: 0.2.0
+Authors@R: person("Xiang", "Ao", role = c("aut", "cre"), email = "xao@hbs.edu")
 Author: Xiang Ao [aut, cre]
-Maintainer: Xiang Ao <xiangao@example.com>
-Description: Implements the Lee & Wooldridge (2025) panel difference-in-differences
+Maintainer: Xiang Ao <xao@hbs.edu>
+Description: Implements the Lee and Wooldridge (2026) panel difference-in-differences
     estimator via unit-specific pre-treatment transformations (demean, detrend,
     demeanq, detrendq). Supports both common-timing and staggered adoption designs
     with cohort-specific aggregation. Inference options include homoskedastic OLS,
     HC1, HC3 (manual sandwich), cluster-robust, wild cluster bootstrap
     (Rademacher weights), and permutation/randomisation inference. The last two are
     distribution-free and recommended at small N or with non-normal errors.
-    Replicates results from Lee & Wooldridge (2025) Section 7.2 (Castle Doctrine
-    law application).
+    Replicates the staggered Castle Doctrine application (Section 7.2) of Lee and
+    Wooldridge (2026b) (SSRN 5325686). This package is an R port of the original
+    Stata 'lwdid' command by Lee and Wooldridge (<https://github.com/Soo-econ/lwdid>),
+    whose v1.0 is based on that small-sample paper. The underlying outcome
+    transformation is published in Lee and Wooldridge (2026)
+    <doi:10.1080/07350015.2026.2683047>.
 License: MIT + file LICENSE
 URL: https://xiangao.github.io/lwdidR/, https://github.com/xiangao/lwdidR
 BugReports: https://github.com/xiangao/lwdidR/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Imports:
     stats,
     utils
@@ -27,3 +30,4 @@ Suggests:
     rmarkdown,
     ggplot2
 VignetteBuilder: knitr
+Config/roxygen2/version: 8.0.0

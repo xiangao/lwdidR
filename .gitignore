@@ -28,3 +28,21 @@ tests/testthat/Rplots.pdf
 # OS files
 .DS_Store
 Thumbs.db
+
+# vignette build cache
+vignettes/*_cache/
+vignettes/*_files/
+# generated Stata reference outputs (datasets are inputs; CSV/logs are generated)
+data-raw/stata-reference/ref_*.csv
+data-raw/stata-reference/lw_*.csv
+data-raw/stata-reference/*.log
+
+# papers (reference only, not package content)
+*.pdf
+
+# pkgdown site (deployed via GitHub Action, not committed)
+docs/
+# scratch output dir
+output/
+# authors' Stata datasets (get via: net get lwdid). lw_walmart ships compressed in inst/extdata
+data-raw/stata-reference/*.dta
