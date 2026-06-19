@@ -19,3 +19,5 @@
 ^_pkgdown\.yml$
 ^.*\.pdf$
 ^README\.html$
+^vignettes/.*_cache$
+^vignettes/.*_files$

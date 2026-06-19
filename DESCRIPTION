@@ -21,6 +21,8 @@ License: MIT + file LICENSE
 URL: https://xiangao.github.io/lwdidR/, https://github.com/xiangao/lwdidR
 BugReports: https://github.com/xiangao/lwdidR/issues
 Encoding: UTF-8
+Depends:
+    R (>= 3.5.0)
 Roxygen: list(markdown = TRUE)
 Imports:
     stats,
@@ -28,6 +30,8 @@ Imports:
 Suggests:
     knitr,
     rmarkdown,
-    ggplot2
+    ggplot2,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Config/roxygen2/version: 8.0.0
+Config/testthat/edition: 3
