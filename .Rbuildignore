@@ -13,3 +13,11 @@
 ^vignettes/simulation_comparison\.Rmd$
 ^tests/testthat/Rplots\.pdf$
 ^\.\.Rcheck$
+^data-raw$
+^docs$
+^output$
+^_pkgdown\.yml$
+^.*\.pdf$
+^README\.html$
+^vignettes/.*_cache$
+^vignettes/.*_files$

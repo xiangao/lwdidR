@@ -1,5 +1,5 @@
 ---
-title: "Castle Law Replication: Lee & Wooldridge (2025) Section 7.2"
+title: "Castle Law Replication: Lee & Wooldridge (2026b) Section 7.2"
 output:
   rmarkdown::html_vignette:
     toc: true
@@ -15,9 +15,19 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ## Overview
 
-This vignette replicates the staggered DiD estimates from Lee & Wooldridge (2025),
+This vignette replicates the staggered DiD estimates from Lee & Wooldridge (2026b),
 Section 7.2, using the `lwdidR` package. The analysis studies the effect of
-Castle Doctrine laws on log homicide rates for US states, 2000–2010.
+Castle Doctrine laws on log homicide rates for all 50 US states, 2000–2010 (the
+data set used by Cunningham 2021).
+
+> `lwdidR` is an R port of the original Stata `lwdid` command by Soo Jeong Lee and
+> Jeffrey M. Wooldridge (<https://github.com/Soo-econ/lwdid>). The Castle Doctrine
+> application replicated here is Section 7.2 of Lee, S. J., & Wooldridge, J. M.
+> (2026b), "Simple Approaches to Inference with Difference-in-Differences
+> Estimators with Small Cross-Sectional Sample Sizes," working paper, SSRN 5325686
+> (<https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5325686>). The underlying
+> transformation method is published in Lee & Wooldridge (2026a), *Journal of
+> Business & Economic Statistics*, <https://doi.org/10.1080/07350015.2026.2683047>.
 
 **Expected results (from paper and Python replication):**
 
@@ -137,7 +147,7 @@ r_vals <- data.frame(
 )
 
 results_table <- merge(paper_vals, r_vals, by = "Method")
-kable(results_table, caption = "Table 7.2 Replication: Lee & Wooldridge (2025)")
+kable(results_table, caption = "Castle Doctrine estimates (Section 7.2, Lee & Wooldridge 2026b)")
 ```
 
 ---
@@ -162,7 +172,7 @@ kable(
   res_cohort$att_by_cohort[, c("cohort", "att", "se", "ci_lower", "ci_upper",
                                  "tstat", "pvalue", "n_periods", "n_units")],
   digits = 4,
-  caption = "Cohort Effects (Equation 7.9, Lee & Wooldridge 2025)"
+  caption = "Cohort Effects (Equation 7.10, Lee & Wooldridge 2026b)"
 )
 ```
 
@@ -188,7 +198,7 @@ kable(
   head(res_none$att_by_cohort_time[, c("cohort", "period", "event_time",
                                          "att", "se", "pvalue")], 15),
   digits = 4,
-  caption = "(g, r)-Specific Effects (Equation 7.8, Lee & Wooldridge 2025)"
+  caption = "(g, r)-Specific Effects (Equation 7.8, Lee & Wooldridge 2026b)"
 )
 ```
 

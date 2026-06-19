@@ -13,12 +13,21 @@ lwdid(
   post = NULL,
   dvar = NULL,
   rolling = "demean",
+  method = NULL,
   control_group = "never_treated",
   aggregate = "overall",
   vce = NULL,
   cluster_var = NULL,
   controls = NULL,
   season_var = NULL,
+  pre = -1L,
+  never = FALSE,
+  attgt = FALSE,
+  ydot = FALSE,
+  reps = 999L,
+  seed = NULL,
+  level = 95,
+  nose = FALSE,
   nboot = 999,
   nperm = 999,
   vce_inner = "hc3"
@@ -42,9 +51,9 @@ Set to \code{NULL} (default) for common-timing designs (supply \code{post} inste
 
 \item{dvar}{Character or NULL. Name of a unit-level treatment-group indicator
 for common-timing designs. If omitted, \code{lwdid()} keeps backwards-compatible
-behavior when \code{post} is the treatment-on indicator; if \code{post} is a
-calendar post indicator, it looks for an unambiguous unit-invariant treatment
-column named \code{treat}, \code{treated}, \code{D}, or \code{d}.}
+behavior when \code{post} is the treatment-on indicator; if \code{post} is a calendar
+post indicator, it looks for an unambiguous unit-invariant treatment column
+named \code{treat}, \code{treated}, \code{D}, or \code{d}.}
 
 \item{rolling}{Character. Transformation method applied to each unit's
 pre-treatment observations:
@@ -54,6 +63,13 @@ pre-treatment observations:
 \item{\code{"demeanq"}}{Seasonal demeaning; requires \code{season_var}.}
 \item{\code{"detrendq"}}{Seasonal detrending; requires \code{season_var}.}
 }}
+
+\item{method}{Character or NULL. If one of \code{"ra"}, \code{"ipw"}, \code{"ipwra"}, the
+large-N path (Lee & Wooldridge 2026a) is used: per-cohort/period ATT(g,t)
+via regression adjustment, inverse-probability weighting, or doubly-robust
+IPWRA, aggregated to the event-study WATT(r) path with wild-cluster-bootstrap
+inference. \code{ipw}/\code{ipwra} require \code{controls}. \code{rolling} must be \code{"demean"} or
+\code{"detrend"}. If \code{NULL} (default), the small-N path is used.}
 
 \item{control_group}{Character. Control group for staggered designs:
 \code{"never_treated"} (default) or \code{"not_yet_treated"}.}
@@ -74,6 +90,26 @@ variables to include in the cross-sectional regression.}
 
 \item{season_var}{Character or NULL. Column name of the seasonal indicator
 (required for \code{rolling = "demeanq"} or \code{"detrendq"}).}
+
+\item{pre}{Integer. Large-N only. Number of most-recent pre-periods used in the
+transformation; \code{-1} (default) uses all pre-periods.}
+
+\item{never}{Logical. Large-N only. If \code{TRUE}, the comparison group is
+never-treated units only (default \code{FALSE} uses not-yet-treated units too).}
+
+\item{attgt}{Logical. Large-N only. If \code{TRUE}, the ATT(g,t) cell estimates are
+returned (and printed).}
+
+\item{ydot}{Logical. Large-N only. If \code{TRUE}, the per-cohort transformed
+outcomes are returned.}
+
+\item{reps}{Integer. Large-N only. Wild cluster bootstrap replications (default 999).}
+
+\item{seed}{Integer or NULL. Large-N only. Seed for the wild bootstrap.}
+
+\item{level}{Numeric. Confidence level for the large-N path (default 95).}
+
+\item{nose}{Logical. Large-N only. If \code{TRUE}, skip standard errors (faster).}
 
 \item{nboot}{Integer. Number of bootstrap replications for \code{vce = "wildboot"}
 (default 999).}
@@ -100,7 +136,7 @@ An object of class \code{"lwdid"}, a list containing:
 }
 }
 \description{
-Main entry point implementing the Lee & Wooldridge (2025) panel
+Main entry point implementing the Lee & Wooldridge (2026) panel
 difference-in-differences estimator. Supports both common-timing and
 staggered adoption designs. Each unit's outcome is residualised using
 only its own pre-treatment observations before running a pooled
@@ -119,6 +155,17 @@ print(res)
 
 }
 \references{
-Lee, Y., & Wooldridge, J. M. (2025). A simple panel data approach
-to difference-in-differences under general treatment patterns.
+Lee, S. J., & Wooldridge, J. M. (2026a). Simple Transformation Approach to
+Difference-in-Differences Estimation for Panel Data. Journal of Business &
+Economic Statistics, 1-27. \doi{10.1080/07350015.2026.2683047}
+
+Lee, S. J., & Wooldridge, J. M. (2026b). Simple Approaches to Inference with
+Difference-in-Differences Estimators with Small Cross-Sectional Sample Sizes.
+Working paper, SSRN 5325686.
+\url{https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5325686}
+
+\code{lwdidR} is an R port of the original Stata \code{lwdid} command by
+Soo Jeong Lee and Jeffrey M. Wooldridge:
+\url{https://github.com/Soo-econ/lwdid}. The Castle Doctrine example (Section
+7.2) and the small-sample inference options are from (2026b).
 }

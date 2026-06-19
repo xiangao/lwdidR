@@ -1,0 +1,50 @@
+citHeader(
+  "lwdidR is an R port of the original Stata 'lwdid' command by Soo Jeong Lee ",
+  "and Jeffrey M. Wooldridge (https://github.com/Soo-econ/lwdid). When using ",
+  "lwdidR, please cite the Lee & Wooldridge papers below. The outcome ",
+  "transformation is published in (2026a); the small-sample inference options ",
+  "and the staggered Castle Doctrine application come from (2026b)."
+)
+
+bibentry(
+  bibtype = "Article",
+  key     = "lee2026a",
+  title   = "Simple Transformation Approach to Difference-in-Differences Estimation for Panel Data",
+  author  = c(
+    person(c("Soo", "Jeong"), "Lee"),
+    person(c("Jeffrey", "M."), "Wooldridge")
+  ),
+  journal = "Journal of Business & Economic Statistics",
+  year    = "2026",
+  pages   = "1--27",
+  doi     = "10.1080/07350015.2026.2683047",
+  textVersion = paste(
+    "Lee, S. J., & Wooldridge, J. M. (2026a).",
+    "Simple Transformation Approach to Difference-in-Differences Estimation",
+    "for Panel Data. Journal of Business & Economic Statistics, 1-27.",
+    "https://doi.org/10.1080/07350015.2026.2683047"
+  )
+)
+
+bibentry(
+  bibtype = "TechReport",
+  key     = "lee2026b",
+  title   = "Simple Approaches to Inference with Difference-in-Differences Estimators with Small Cross-Sectional Sample Sizes",
+  author  = c(
+    person(c("Soo", "Jeong"), "Lee"),
+    person(c("Jeffrey", "M."), "Wooldridge")
+  ),
+  institution = "Working paper, SSRN 5325686",
+  year    = "2026",
+  url     = "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5325686",
+  textVersion = paste(
+    "Lee, S. J., & Wooldridge, J. M. (2026b).",
+    "Simple Approaches to Inference with Difference-in-Differences Estimators",
+    "with Small Cross-Sectional Sample Sizes. Working paper, SSRN 5325686.",
+    "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5325686"
+  )
+)
+
+citFooter(
+  "The original Stata package is available at https://github.com/Soo-econ/lwdid"
+)
