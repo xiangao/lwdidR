@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">lwdidR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,18 +33,31 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="lwdidr-020">lwdidR 0.2.0<a class="anchor" aria-label="anchor" href="#lwdidr-020"></a></h2>
+<ul><li>Added the <strong>large-N path</strong> of Lee &amp; Wooldridge (2026a), activated via <code>method = "ra"</code>, <code>"ipw"</code>, or <code>"ipwra"</code>. It estimates ATT(g,t) by cohort and period (regression adjustment / inverse-probability weighting / doubly-robust IPWRA), aggregates to the event-study WATT(r) path and Pre/Post averages, and reports wild cluster bootstrap standard errors with simultaneous (sup-t) confidence bands. New options: <code>method</code>, <code>pre</code>, <code>never</code>, <code>attgt</code>, <code>ydot</code>, <code>reps</code>, <code>seed</code>, <code>level</code>, <code>nose</code>.</li>
+<li>Added <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> (event-study graph via ggplot2) and <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code>/<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> methods for the large-N result (class <code>lwdid_large</code>).</li>
+<li>Influence-function machinery ported verbatim from Stata <code>lwdid</code> v2.4.2; the large-N estimates and inference are validated against Stata on <code>lw_smoking</code> and <code>lw_walmart</code> (see <code>data-raw/stata-reference/</code>).</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.2" id="lwdidr-012">lwdidR 0.1.2<a class="anchor" aria-label="anchor" href="#lwdidr-012"></a></h2>
+<ul><li>Corrected citation to the published version: Lee, S. J., &amp; Wooldridge, J. M. (2026), “Simple Transformation Approach to Difference-in-Differences Estimation for Panel Data”, <em>Journal of Business &amp; Economic Statistics</em>, 1–27, <a href="doi:10.1080/07350015.2026.2683047" class="uri">doi:10.1080/07350015.2026.2683047</a>. Fixed the first author’s name (previously shown incorrectly as “Lee, Y.”).</li>
+<li>Added <code>inst/CITATION</code> and acknowledged the original Stata <code>lwdid</code> package (<a href="https://github.com/Soo-econ/lwdid" class="external-link uri">https://github.com/Soo-econ/lwdid</a>) in the README and function documentation.</li>
+<li>Corrected paper attribution for the Castle Doctrine example and the small-sample inference options (wild bootstrap, permutation): these come from the small-N paper Lee &amp; Wooldridge (2026b), “Simple Approaches to Inference with Difference-in-Differences Estimators with Small Cross-Sectional Sample Sizes” (SSRN 5325686), Section 7.2 — not the JBES transformation paper. The package now cites both papers. Removed a reference to a non-existent “Table 7.2” (the Castle results appear in the text of Section 7.2) and corrected the cohort-effect equation reference to (7.10).</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="lwdidr-010">lwdidR 0.1.0<a class="anchor" aria-label="anchor" href="#lwdidr-010"></a></h2>
 <p>Initial release.</p>
-<ul><li>Implements Lee &amp; Wooldridge (2025) DiD estimator via unit-specific pre-treatment transformations</li>
+<ul><li>Implements Lee &amp; Wooldridge (2026a, 2026b) DiD estimator via unit-specific pre-treatment transformations</li>
 <li>Supports common-timing and staggered adoption designs</li>
 <li>Transformation methods: <code>demean</code>, <code>detrend</code>, <code>demeanq</code>, <code>detrendq</code>
 </li>
 <li>Standard errors: homoskedastic OLS, HC1, HC3, cluster-robust (all manual sandwich)</li>
 <li>Staggered design: overall pooled ATT, cohort-specific ATT, and (g,r)-level effects</li>
 <li>Bundles Castle Doctrine dataset for replication of paper Section 7.2</li>
-<li>Vignette replicating all numerical results from Lee &amp; Wooldridge (2025) Table 7.2</li>
+<li>Vignette replicating the Castle Doctrine results in Lee &amp; Wooldridge (2026b) Section 7.2</li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
