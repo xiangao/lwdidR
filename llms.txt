@@ -137,9 +137,8 @@ Castle Doctrine laws and log homicide rates:
 
 All results match the Castle Doctrine estimates reported in the text of
 Section 7.2 of Lee & Wooldridge (2026b) within tolerance 0.001 (data set
-used by Cunningham 2021). See
-[`vignette("castle_law")`](https://xiangao.github.io/lwdidR/articles/)
-for full replication.
+used by Cunningham 2021). See `vignette("castle_law")` for full
+replication.
 
 ## Main functions
 
